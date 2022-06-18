@@ -24,7 +24,9 @@ export interface User {
   const commentList = await getCommentUsers()
   commentList.data.forEach(item => {
     const user = parseComment(item.body)
-    map.set(user.username, user)
+    if (user.username) {
+      map.set(user.username, user)
+    }
   })
 
   writeFile(path, Array.from(map.values()))
