@@ -1,7 +1,7 @@
 import axios from 'axios'
+import config from '../config'
 
-const siteCN = 'https://leetcode.cn/graphql/noj-go'
-const siteCOM = 'https://leetcode.com/graphql'
+const { siteCN, siteCOM, commnetUrl } = config
 
 interface SubmissionCN {
   submissionId: number
@@ -108,4 +108,18 @@ export function getProfileCalendarCOM(username: string) {
   }
 
   return axios.request<ProfileCalendarCOM>(options)
+}
+
+interface UserComment {
+  id: number
+  body: string
+}
+
+export function getCommentUsers() {
+  const options = {
+    method: 'GET',
+    url: commnetUrl,
+  }
+
+  return axios.request<UserComment[]>(options)
 }
