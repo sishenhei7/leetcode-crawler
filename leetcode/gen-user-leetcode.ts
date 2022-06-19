@@ -1,4 +1,4 @@
-import { getRecentACSubmissionsCN, getRecentACSubmissionsCOM, getQuestionMapCOM } from './api'
+import { getRecentACSubmissionsCN, getRecentACSubmissionsCOM } from './api'
 import userList from '../data/users.json'
 import { runTask } from './utils'
 
