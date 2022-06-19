@@ -8,6 +8,7 @@
     "preview": "vite preview",
     "leetcode": "tsx leetcode",
     "gen-users": "tsx leetcode/gen-users.ts",
+    "gen-question-map": "tsx leetcode/gen-global-question-map.ts",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --fix",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },

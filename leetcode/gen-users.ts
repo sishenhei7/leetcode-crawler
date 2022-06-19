@@ -1,4 +1,4 @@
-import { getCommentUsers } from './api'
+import { getGithubCommentUsers } from './api'
 import { readFile, writeFile } from './utils'
 
 export interface User {
@@ -21,7 +21,7 @@ export interface User {
   })
 
   // 用新数据增量更新老数据，同样的用户名，新的数据会覆盖老的数据
-  const commentList = await getCommentUsers()
+  const commentList = await getGithubCommentUsers()
   commentList.data.forEach(item => {
     const user = parseComment(item.body)
     if (user.username) {

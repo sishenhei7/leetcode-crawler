@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
+type asyncFunc = () => Promise<any>
+
 export const resolve = (p: string) => path.resolve(__dirname, p)
 
 export function existFile(p: string) {
@@ -35,4 +37,28 @@ export function writeFile(p: string, d: any) {
     console.log(`写入文件失败：${resolve(p)} ${error}`)
     process.exit(1)
   }
+}
+
+export async function runTask(taskList: asyncFunc[], limit: number) {
+  if (!taskList?.length || limit <= 0) {
+    return null
+  }
+
+  let i = 0
+  const res = Array(limit).fill(null)
+
+  async function next(k: number) {
+    res[k] = await taskList[k]()
+
+    if (i + 1 < taskList.length) {
+      i += 1
+      next(i)
+    }
+  }
+
+  for (let i = 0; i < limit; i += 1) {
+    await next(i)
+  }
+
+  return res
 }

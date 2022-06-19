@@ -1,10 +1,7 @@
-import { getRecentACSubmissionsCN } from './api'
-
-const username = 'ni-hao-a-pai-da-xing'
-
+import { getQuestionListCOM } from './api'
 ;(async () => {
-  const submissions = await getRecentACSubmissionsCN(username)
-  console.log(submissions.data)
+  const submissions = await getQuestionListCOM()
+  console.log(submissions.data.data.problemsetQuestionList.questions.length)
   // const topics = await getRecentTopics(username)
   // console.log(topics)
 })()

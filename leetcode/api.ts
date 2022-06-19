@@ -3,19 +3,17 @@ import config from '../config'
 
 const { siteCN, siteCOM, commnetUrl } = config
 
-interface SubmissionCN {
-  submissionId: number
-  submitTime: number
-  question: {
-    questionFrontendId: string
-    titleSlug: string
-    translatedTitle: string
-  }
-}
-
 interface RecentACSubmissionsCN {
   data: {
-    recentACSubmissions: SubmissionCN[]
+    recentACSubmissions: {
+      submissionId: number
+      submitTime: number
+      question: {
+        questionFrontendId: string
+        titleSlug: string
+        translatedTitle: string
+      }
+    }[]
   }
 }
 
@@ -110,12 +108,42 @@ export function getProfileCalendarCOM(username: string) {
   return axios.request<ProfileCalendarCOM>(options)
 }
 
+interface QuestionListCOM {
+  data: {
+    problemsetQuestionList: {
+      total: number
+      questions: {
+        frontendQuestionId: string
+        title: string
+        titleSlug: string
+        acRate: number
+        difficulty: string
+      }[]
+    }
+  }
+}
+
+export function getQuestionListCOM() {
+  const options = {
+    method: 'POST',
+    url: siteCOM,
+    headers: {},
+    data: {
+      query:
+        '\n    query problemsetQuestionList($categorySlug: String, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {\n  problemsetQuestionList: questionList(\n    categorySlug: $categorySlug\n    limit: $limit\n    skip: $skip\n    filters: $filters\n  ) {\n    total: totalNum\n    questions: data {\n      acRate\n      difficulty\n      freqBar\n      frontendQuestionId: questionFrontendId\n      isFavor\n      paidOnly: isPaidOnly\n      status\n      title\n      titleSlug\n      topicTags {\n        name\n        id\n        slug\n      }\n      hasSolution\n      hasVideoSolution\n    }\n  }\n}\n    ',
+      variables: { categorySlug: '', filters: {}, skip: 0, limit: 20000 },
+    },
+  }
+
+  return axios.request<QuestionListCOM>(options)
+}
+
 interface UserComment {
   id: number
   body: string
 }
 
-export function getCommentUsers() {
+export function getGithubCommentUsers() {
   const options = {
     method: 'GET',
     url: commnetUrl,
