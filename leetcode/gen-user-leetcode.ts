@@ -64,7 +64,7 @@ interface UserLeetcode {
       })
     } else {
       const data = await getRecentACSubmissionsCOM(username)
-      data?.data?.recentAcSubmissionList?.forEach(submission => {
+      data?.data?.data?.recentAcSubmissionList?.forEach(submission => {
         const { timestamp, titleSlug } = submission
         const date = dayjs(Number(timestamp) * 1000).format(dayFormat)
         date === today && todayList.push(questionMapCOM[titleSlug] || titleSlug)
