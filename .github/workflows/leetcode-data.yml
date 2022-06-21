@@ -3,8 +3,7 @@ name: leetcode-data
 on:
   schedule:
     # 0时区每小时的50分启动
-    # '50 * * * *'
-    - cron: '*/5 * * * *'
+    - cron: '50 * * * *'
 
 jobs:
   build:
