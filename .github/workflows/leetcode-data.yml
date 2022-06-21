@@ -1,0 +1,38 @@
+name: AC record schedule
+
+on:
+  schedule:
+    # 0时区每小时的50分启动
+    # '50 * * * *'
+    - cron: '*/5 * * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      TZ: Asia/Shanghai # 时区
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+          cache: 'yarn'
+      - run: yarn install
+      - run: |
+          git pull
+          yarn gen-users
+          yarn gen-user-leetcode
+          git pull
+
+      - name: Commit GitHub
+        run: |
+          git config --local user.email ${{ github.qq }}
+          git config --local user.name ${{ github.name }}
+          git add .
+          git commit -m "update by github action"
+          git push
