@@ -1,0 +1,22 @@
+{
+  "username": "browsnet",
+  "isCN": true,
+  "nickname": "",
+  "wechat": "",
+  "github": "",
+  "total": 0,
+  "weekQuestionIds": ["剑指 Offer II 038", "剑指 Offer II 116", "1108"],
+  "day": [{
+    "date": "2022-06-21",
+    "total": 3,
+    "questionIds": ["剑指 Offer II 038", "剑指 Offer II 116", "1108"]
+  }],
+  "week": [{
+    "date": "2022-06-20",
+    "total": 3
+  }],
+  "month": [{
+    "date": "2022-06",
+    "total": 3
+  }]
+}
