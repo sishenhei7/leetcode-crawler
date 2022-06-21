@@ -32,11 +32,15 @@ export function getRecentACSubmissionsCN(username: string) {
   return axios.request<RecentACSubmissionsCN>(options)
 }
 
-interface SubmissionCOM {
-  id: number
-  timestamp: number
-  title: string
-  titleSlug: string
+interface RecentACSubmissionsCOM {
+  data: {
+    recentAcSubmissionList: {
+      id: string
+      timestamp: string
+      title: string
+      titleSlug: string
+    }[]
+  }
 }
 
 export function getRecentACSubmissionsCOM(username: string) {
@@ -51,7 +55,7 @@ export function getRecentACSubmissionsCOM(username: string) {
     },
   }
 
-  return axios.request<SubmissionCOM[]>(options)
+  return axios.request<RecentACSubmissionsCOM>(options)
 }
 
 interface ProfileCalendarCN {

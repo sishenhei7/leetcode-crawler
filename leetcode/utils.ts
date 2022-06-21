@@ -46,19 +46,31 @@ export async function runTask(taskList: asyncFunc[], limit: number) {
 
   let i = 0
   const res = Array(limit).fill(null)
+  const taskLen = taskList.length
 
   async function next(k: number) {
     res[k] = await taskList[k]()
 
-    if (i + 1 < taskList.length) {
+    if (i + 1 < taskLen) {
       i += 1
       next(i)
     }
   }
 
   for (let i = 0; i < limit; i += 1) {
-    await next(i)
+    if (i < taskLen) {
+      await next(i)
+    }
   }
 
   return res
+}
+
+export function getMondayOfWeek(date: string) {
+  const currentDate = new Date(date)
+  return new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 1))
+}
+
+export function mergeArray(arr1: number[], arr2: number[]) {
+  return Array.from(new Set([...arr1, ...arr2]))
 }

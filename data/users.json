@@ -1,1 +1,25 @@
-[{"username":"dreamjean720","isCN":true,"nickname":"","wechat":"","github":""},{"username":"clever-vvilsoneye","isCN":true,"nickname":"아이유-意优","wechat":"","github":""},{"username":"lemon-chen-t","isCN":true,"nickname":"","wechat":"","github":""},{"username":"alexgy1","isCN":false,"nickname":"","wechat":"","github":""}]
+[{
+  "username": "dreamjean720",
+  "isCN": true,
+  "nickname": "",
+  "wechat": "",
+  "github": ""
+}, {
+  "username": "clever-vvilsoneye",
+  "isCN": true,
+  "nickname": "아이유-意优",
+  "wechat": "",
+  "github": ""
+}, {
+  "username": "lemon-chen-t",
+  "isCN": true,
+  "nickname": "",
+  "wechat": "",
+  "github": ""
+}, {
+  "username": "alexgy1",
+  "isCN": false,
+  "nickname": "",
+  "wechat": "",
+  "github": ""
+}]
