@@ -1,4 +1,4 @@
-name: AC record schedule
+name: leetcode-data
 
 on:
   schedule:
