@@ -121,6 +121,9 @@ interface UserLeetcode {
     const userDataMonth = userData.month[0]
     userDataMonth.total += nubTodayList.length
 
+    // 更新total
+    userData.total += nubTodayList.length
+
     writeFile(userFilePath, userData)
   })
 
