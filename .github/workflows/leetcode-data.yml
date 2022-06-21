@@ -3,7 +3,8 @@ name: leetcode-data
 on:
   schedule:
     # 0时区每小时的50分启动
-    - cron: '50 * * * *'
+    # '50 * * * *'
+    - cron: '*/5 * * * *'
 
 jobs:
   build:
@@ -30,8 +31,8 @@ jobs:
 
       - name: Commit GitHub
         run: |
-          git config --local user.email ${{ github.qq }}
-          git config --local user.name ${{ github.name }}
+          git config --local user.email "982505136@qq.com"
+          git config --local user.name "sishenhei7-Bot"
           git add .
           git commit -m "update by github action"
           git push
