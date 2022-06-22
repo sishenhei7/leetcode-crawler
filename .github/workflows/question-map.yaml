@@ -4,8 +4,8 @@ on:
   push:
     branches: ['main']
   schedule:
-    # 0时区每小时的50分启动
-    - cron: '50 * * * *'
+    # 0时区每周一0点执行
+    - cron: '0 0 * * 1'
 
 jobs:
   build:
@@ -26,9 +26,7 @@ jobs:
       - run: yarn install
       - run: |
           git pull
-          yarn gen-users
-          yarn gen-user-leetcode
-          git pull
+          yarn gen-question-map
 
       - name: Commit GitHub
         run: |
@@ -36,4 +34,5 @@ jobs:
           git config user.email 982505136@qq.com
           git add .
           git commit -m "update by github action"
+          git pull
           git push
