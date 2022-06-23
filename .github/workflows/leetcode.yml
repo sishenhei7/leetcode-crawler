@@ -2,7 +2,8 @@ name: generate leetcode data
 
 on:
   # push:
-  #   branches: ['main']
+  #   branches:
+  #     - 'main'
   schedule:
     # 0时区每小时的50分启动
     - cron: '50 * * * *'
