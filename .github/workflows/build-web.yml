@@ -3,7 +3,8 @@ name: build website
 on:
   push:
     branches: ['main']
-    paths-ignore: ['**.json']
+    # paths-ignore: ['**.json']
+    paths: ['src/**']
 
 jobs:
   build:
