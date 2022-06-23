@@ -33,6 +33,6 @@ jobs:
           git config user.name sishenhei7
           git config user.email 982505136@qq.com
           git add .
-          git commit -m "update by github action"
+          git commit --allow-empty -m "chore: update by github action"
           git pull --ff-only
           git push
