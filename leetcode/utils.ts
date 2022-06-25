@@ -71,6 +71,6 @@ export function getMondayOfWeek(date: string) {
   return new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 1))
 }
 
-export function mergeArray(arr1: number[], arr2: number[]) {
-  return Array.from(new Set([...arr1, ...arr2]))
+export function mergeArray(...args: number[][]) {
+  return Array.from(new Set([...args.flat()]))
 }

@@ -8,6 +8,7 @@ const dayFormat = 'YYYY-MM-DD'
 const weekFormat = 'YYYY-MM-DD'
 const monthFormat = 'YYYY-MM'
 const today = dayjs().format(dayFormat)
+const yesterday = dayjs().subtract(1, 'day').format(dayFormat)
 const currentWeek = dayjs(getMondayOfWeek(today)).format(weekFormat)
 const currentMonth = dayjs().format(monthFormat)
 
@@ -50,27 +51,6 @@ interface UserLeetcode {
           month: [],
         }
 
-    // 只增量更新今天的数据
-    const todayList = []
-    if (user.isCN) {
-      const data = await getRecentACSubmissionsCN(username)
-      data?.data?.data?.recentACSubmissions?.forEach(submission => {
-        const {
-          submitTime,
-          question: { questionFrontendId },
-        } = submission
-        const date = dayjs(Number(submitTime) * 1000).format(dayFormat)
-        date === today && todayList.push(questionFrontendId)
-      })
-    } else {
-      const data = await getRecentACSubmissionsCOM(username)
-      data?.data?.data?.recentAcSubmissionList?.forEach(submission => {
-        const { timestamp, titleSlug } = submission
-        const date = dayjs(Number(timestamp) * 1000).format(dayFormat)
-        date === today && todayList.push(questionMapCOM[titleSlug] || titleSlug)
-      })
-    }
-
     // 加入默认day数据
     if (userData.day?.[0]?.date !== today) {
       userData.day.unshift({
@@ -101,32 +81,70 @@ interface UserLeetcode {
       })
     }
 
-    // 根据 weekQuestionIds 去重
-    const { weekQuestionIds } = userData
-    const weekSet = new Set(weekQuestionIds)
-    const nubTodayList = todayList.filter(id => !weekSet.has(id))
-    userData.weekQuestionIds = mergeArray(weekQuestionIds, nubTodayList)
+    // 更新今天和昨天的数据（防止昨天最后一次任务失败了）
+    const todayList = []
+    const yesterdayList = []
+    if (user.isCN) {
+      const data = await getRecentACSubmissionsCN(username)
+      data?.data?.data?.recentACSubmissions?.forEach(submission => {
+        const {
+          submitTime,
+          question: { questionFrontendId },
+        } = submission
+        const date = dayjs(Number(submitTime) * 1000).format(dayFormat)
+        date === today && todayList.push(questionFrontendId)
+        date === yesterday && yesterdayList.push(questionFrontendId)
+      })
+    } else {
+      const data = await getRecentACSubmissionsCOM(username)
+      data?.data?.data?.recentAcSubmissionList?.forEach(submission => {
+        const { timestamp, titleSlug } = submission
+        const date = dayjs(Number(timestamp) * 1000).format(dayFormat)
+        date === today && todayList.push(questionMapCOM[titleSlug] || titleSlug)
+        date === yesterday && yesterdayList.push(questionMapCOM[titleSlug] || titleSlug)
+      })
+    }
 
-    // 更新 day
-    const userDataToday = userData.day[0]
-    const { questionIds } = userDataToday
-    userDataToday.questionIds = mergeArray(questionIds, nubTodayList)
-    userDataToday.total = userDataToday.questionIds.length
-
-    // 更新 week
-    const userDataWeek = userData.week[0]
-    userDataWeek.total = userData.weekQuestionIds.length
-
-    // 更新 month
-    const userDataMonth = userData.month[0]
-    userDataMonth.total += nubTodayList.length
-
-    // 更新total
-    userData.total += nubTodayList.length
-
+    updateUserDataByDay(userData, today, todayList)
+    updateUserDataByDay(userData, yesterday, yesterdayList)
     writeFile(userFilePath, userData)
   })
 
   await runTask(taskList, 10)
   // TODO: add spinner and console
 })()
+
+function updateUserDataByDay(userData: UserLeetcode, date: string, ids: number[]) {
+  // 这天新增的题目数（不根据weekQuestionIds去重）
+  let newCount = 0
+
+  // 更新 weekQuestionIds
+  if (getMondayOfWeek(today) === getMondayOfWeek(date)) {
+    const { weekQuestionIds } = userData
+    userData.weekQuestionIds = Array.from(new Set([...weekQuestionIds, ...ids]))
+  }
+
+  // 更新 day（不根据weekQuestionIds去重）
+  const userDataByDay = userData.day.find(item => item.date === date)
+  if (userDataByDay) {
+    const { questionIds } = userDataByDay
+    userDataByDay.questionIds = mergeArray(questionIds, ids)
+    userDataByDay.total = userDataByDay.questionIds.length
+    newCount = userDataByDay.total - questionIds.length
+  }
+
+  if (newCount > 0) {
+    // 更新 week
+    const week = dayjs(getMondayOfWeek(date)).format(weekFormat)
+    const userDataByWeek = userData.week.find(item => item.date === week)
+    userDataByWeek.total += newCount
+
+    // 更新 month
+    const month = dayjs(date).format(monthFormat)
+    const userDataByMonth = userData.month.find(item => item.date === month)
+    userDataByMonth.total += newCount
+
+    // 更新total
+    userData.total += newCount
+  }
+}
