@@ -4,6 +4,10 @@
 
 > 这是一个爬取 leetcode 记录 + 统计相关用户数据 + 展示用户数据的库
 
+## reason
+
+现在有很多 leetcode 的刷题群，但是都使用手动记录的方法，非常不方便，而且也没有可视化的展示，我打算解决这个痛点。
+
 ## preview
 
 <https://sishenhei7.github.io/leetcode-crawler/app/index.html>
