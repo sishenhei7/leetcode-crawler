@@ -1,6 +1,8 @@
 # leetcode-crawler
 
-crawl, audit and show people's leetcode data
+> crawl, audit and show people's leetcode data
+
+> 这是一个爬取 leetcode 记录 + 统计相关用户数据 + 展示用户数据的库
 
 ## preview
 
