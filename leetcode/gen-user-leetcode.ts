@@ -60,7 +60,7 @@ interface UserLeetcode {
       })
 
       // 每周第一天的时候重置 weekQuestionIds
-      if (today === currentWeek) {
+      if (today === dayjs(getMondayOfWeek(today)).format(dayFormat)) {
         userData.weekQuestionIds = []
       }
     }
@@ -119,7 +119,7 @@ function updateUserDataByDay(userData: UserLeetcode, date: string, ids: number[]
   let newCount = 0
 
   // 更新 weekQuestionIds
-  if (getMondayOfWeek(today) === getMondayOfWeek(date)) {
+  if (dayjs(getMondayOfWeek(today)).isSame(getMondayOfWeek(date), 'day')) {
     const { weekQuestionIds } = userData
     userData.weekQuestionIds = Array.from(new Set([...weekQuestionIds, ...ids]))
   }
