@@ -68,7 +68,9 @@ export async function runTask(taskList: asyncFunc[], limit: number) {
 
 export function getMondayOfWeek(date: string) {
   const currentDate = new Date(date)
-  return new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 1))
+  const day = currentDate.getDay()
+  const offset = day === 0 ? 6 : day - 1
+  return new Date(currentDate.setDate(currentDate.getDate() - offset))
 }
 
 export function mergeArray(...args: number[][]) {
